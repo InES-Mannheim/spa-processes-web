@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Production -->
+        <!-- <link type="text/css" rel=stylesheet href="css/bootstrap-theme.min.css" /> -->
+        <!-- <link type="text/css" rel=stylesheet href="css/bootstrap.min.css" /> -->
+        <!--end: Production -->
+        <!-- Development -->
+        <link type="text/css" rel=stylesheet href="css/bootstrap-theme.css" />
+        <link type="text/css" rel=stylesheet href="css/bootstrap.css" />
+        <link type="text/css" rel=stylesheet href="css/ladda-themeless.min.css" />
+        <!--end: Development -->
+        <style>
+            #table{
+                margin-top: 20px;
+            }
+            .title{
+                margin-top: -20px;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="page-header">
+            <h1 class="title">SPA-WEB</h1>
+        </header>
+        <section class="container">
+            <section class="row">
+                <section class="col-md-10 col-md-offset-1">
+                    <section class="row">
+                        <section class="col-md-4">
+                            <section class="input-group">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                              </span>
+                              <input type="text" class="form-control" placeholder="Search for...">
+                            </section><!-- /input-group -->
+                        </section><!-- /.col-lg-6 -->
+                        <section class="col-md-4 col-md-offset-4">
+                            <div class="pull-right">
+                                <a id="create-project-button" href="#" class="btn btn-primary ladda-button" role="button" tabindex="0" data-toggle="popover" data-content="The project was created succesfully!" data-style="slide-right"><span class="ladda-label">Create Project</span></a>
+                            </div>
+                        </section><!-- /.col-lg-6 -->
+                    </section>
+                </section>                
+            </section>
+            <section class="row">
+                <section class="col-md-10 col-md-offset-1">
+                    <section id="table" >
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-5">Project ID</th>
+                                    <th class="col-md-2">Creation Date</th>
+                                    <th class="col-md-2"># Processes</th>
+                                    <th class="col-md-2">Last Modification</th>
+                                    <th class="col-md-1">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Project 1</td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="badge">3</span></td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="glyphicon glyphicon-trash"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Project 1</td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="badge">3</span></td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="glyphicon glyphicon-trash"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Project 1</td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="badge">3</span></td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="glyphicon glyphicon-trash"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Project 1</td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="badge">3</span></td>
+                                    <td class="text-center">Project 1</td>
+                                    <td class="text-center"><span class="glyphicon glyphicon-trash"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <footer>
+            
+        </footer>
+        <!-- Production -->
+        <!-- <script type="application/javascript" src="js/bootstrap.min.js"></script> -->
+        <!--end: Production -->
+        <!-- Development -->
+        <script type="application/javascript" src="js/jquery.js"></script>
+        <script type="application/javascript" src="js/bootstrap.js"></script>
+        <script type="application/javascript" src="js/spin.js"  ></script>
+        <script type="application/javascript" src="js/ladda.js"></script>
+        <script type="application/javascript" src="js/ladda-jquery.js"></script>
+        <script type="application/javascript" src="js/jquery.bootstrap.growl.js"></script>
+        <!--end: Development -->
+        
+        <script>
+            $(window).ready(function(){
+                var createProject = Ladda.create(document.querySelector('#create-project-button'));
+                var createProjectPopover = $('#create-project-button').popover({
+                    placement: 'top',
+                    trigger: 'manual',
+                    animation: true
+                });
+                $("#create-project-button").on("click", function(){
+                    createProject.start();
+                    setTimeout(function(){
+                        createProject.stop();
+                        //createProjectPopover.popover('show');
+                        //createProjectPopover.parent().find(".popover-content").addClass("bg-success");
+                        //setTimeout(function(){
+                            //createProjectPopover.popover('hide');
+                        //}, 100000);
+                        $.bootstrapGrowl("This is a test This is a test This is a test This is a test This is a test.", {
+                            type: "success", //danger, info, success
+                            align: "right",
+                            width: "auto",
+                            offset: {from: 'top', amount: 13}
+                        });
+                    }, 2000);
+                });     
+                
+                
+                $(function() {
+                    
+
+                   
+                });
+            });            
+        </script>
+    </body>
+</html>
