@@ -1,0 +1,112 @@
+<section class="container">
+    <section class="row">
+        <section class="col-md-10 col-md-offset-1">
+            <section class="row">
+                <section class="col-md-4">
+                    <section class="input-group">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                      </span>
+                      <input type="text" class="form-control" placeholder="Search for..." ng-model="query"></input>
+                    </section><!-- /input-group -->
+                </section><!-- /.col-lg-6 -->
+                <section class="col-md-4 col-md-offset-4">
+                    <div class="pull-right">
+                        <button id="create-project-button" class="btn btn-primary" type="button" tabindex="0" data-toggle="modal" data-target="#uploadProcessFileModal"><span class="ladda-label">Upload Process</span></button>
+                    </div>
+                </section><!-- /.col-lg-6 -->
+            </section>
+        </section>                
+    </section>
+    <section class="row">
+        <section class="col-md-10 col-md-offset-1">
+            <section id="table" >
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-md-3">Process ID</th>
+                            <th class="col-md-5">Process Label</th>
+                            <th class="col-md-1 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="process in processes | filter:query">
+                            <td>{{process.id}}</td>
+                            <td>{{process.label}}</td>
+                            <td class="text-center">
+                                <span><a class="glyphicon glyphicon-download" title="Download process file" href="http://localhost:8080{{process.uri}}"></a></span>
+                                <span class="col-md-offset-1"><a class="glyphicon glyphicon-trash" title="Remove process" href="#"></a></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </section>
+    </section>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="uploadProcessFileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Process</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createProcessForm">
+                    <div class="form-group">
+                        <label>Process ID</label>
+                        <input name="processID" ng-model="processID" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Process Label</label>
+                        <input name="processLabel" ng-model="processLabel" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Process File</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                    Browse <input name="file" ng-model="processFile" ngf-select type="file" required>
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cleanCreateProcessForm()">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="uploadProcessFile(processFile)">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    $('#uploadProcessFileModal').on('hide.bs.modal', function(e){
+        $('#createProcessForm :input').not(':button, :submit, :reset, :hidden')
+                                      .val('');
+    });
+    
+    $(document).on('change', '.btn-file :file', function() {
+      var input = $(this),
+          numFiles = input.get(0).files ? input.get(0).files.length : 1,
+          label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+          input.trigger('fileselect', [numFiles, label]);
+    });
+
+    $(document).ready( function() {
+        $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+            if( input.length ) {
+                input.val(log);
+            } else {
+                if( log ) alert(log);
+            }
+
+        });
+    });
+</script>

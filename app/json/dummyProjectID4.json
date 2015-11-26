@@ -1,0 +1,22 @@
+[
+    {
+        "id": "dummyProjectID4-dummyProcessID3",
+        "label": "dummyProjectID4-dummyProcessID3-label"
+    },
+    {
+        "id": "dummyProjectID4-dummyProcessID4",
+        "label": "dummyProjectID4-dummyProcessID4-label"
+    },
+    {
+        "id": "dummyProjectID4-dummyProcessID1",
+        "label": "dummyProjectID4-dummyProcessID1-label"
+    },
+    {
+        "id": "dummyProjectID4-dummyProcessID2",
+        "label": "dummyProjectID4-dummyProcessID2-label"
+    },
+    {
+        "id": "dummyProjectID4-dummyProcessID0",
+        "label": "dummyProjectID4-dummyProcessID0-label"
+    }
+]

@@ -1,0 +1,27 @@
+[
+    {
+        "id": "dummyProjectID4",
+        "label": "dummyProjectID4-label",
+        "processNumber": 5
+    },
+    {
+        "id": "dummyProjectID2",
+        "label": "dummyProjectID2-label",
+        "processNumber": 4
+    },
+    {
+        "id": "dummyProjectID3",
+        "label": "dummyProjectID3-label",
+        "processNumber": 1
+    },
+    {
+        "id": "dummyProjectID0",
+        "label": "dummyProjectID0-label",
+        "processNumber": 5
+    },
+    {
+        "id": "dummyProjectID1",
+        "label": "dummyProjectID1-label",
+        "processNumber": 0
+    }
+]
