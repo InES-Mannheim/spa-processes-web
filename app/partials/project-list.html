@@ -12,7 +12,7 @@
                 </section><!-- /.col-lg-6 -->
                 <section class="col-md-4 col-md-offset-4">
                     <div class="pull-right">
-                        <a id="create-project-button" href="" ng-click="createProject()" class="btn btn-primary ladda-button" role="button" tabindex="0" data-toggle="popover" data-content="The project was created succesfully!" data-style="slide-right"><span class="ladda-label">Create Project</span></a>
+                        <button id="create-project-button" class="btn btn-primary ladda-button" type="button" tabindex="0" data-style="slide-right" data-toggle="modal" data-target="#createProjectModal"><span class="ladda-label">Create Project</span></button>
                     </div>
                 </section><!-- /.col-lg-6 -->
             </section>
@@ -32,10 +32,10 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="project in projects | filter:query">
-                            <td><a href="#/project/{{project.id}}">{{project.id}}</a></td>
+                            <td><a ng-href="#/project/{{project.id}}/processes">{{project.id}}</a></td>
                             <td>{{project.label}}</td>
                             <td class="text-center"><span class="badge">{{project.processNumber}}</span></td>
-                            <td class="text-center"><span><a href="#" class="glyphicon glyphicon-edit" title="Remove Project"></a></span><span><a href="#" class="col-md-offset-1 glyphicon glyphicon-trash" title="Remove Project"></a></span></td>
+                            <td class="text-center"><span><a href="#" class="glyphicon glyphicon-edit" title="Remove Project"></a></span><span><a href="" ng-click="deleteProject(project.id)" class="col-md-offset-1 glyphicon glyphicon-trash" title="Remove Project"></a></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -43,3 +43,39 @@
         </section>
     </section>
 </section>
+
+<!-- Create Project Modal -->
+<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Process</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createProjectForm">
+                    <div class="form-group">
+                        <label>Project ID</label>
+                        <input name="newProjectID" ng-model="newProjectID" type="text" class="form-control" placeholder="In case id is not entered, it will be generate automatically.">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Label</label>
+                        <input name="newProjectLabel" ng-model="newProjectLabel" type="text" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cleanCreateProjectForm()">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="createProject()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end: Create Process Modal -->
+
+<script type="application/javascript">
+    $('#createProjectModal').on('hide.bs.modal', function(e){
+        $('#createProjectForm :input').not(':button, :submit, :reset, :hidden')
+                                      .val('');
+    });
+</script>

@@ -9,9 +9,6 @@ var spaWebApp = angular.module('spaWebApp', [
     'ngFileUpload'
 ]);
 
-spaWebApp.value('SERVER_HOST', 'http://localhost');
-spaWebApp.value('SERVER_PORT', '8080');
-
 spaWebApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
@@ -19,7 +16,7 @@ spaWebApp.config(['$routeProvider',
                 templateUrl: 'partials/project-list.html',
                 controller: 'ProjectListCtrl'
             }).
-            when('/project/:projectID', {
+            when('/project/:projectID/processes', {
                 templateUrl: 'partials/process-list.html',
                 controller: 'ProjectProcessListCtrl'
             }).
