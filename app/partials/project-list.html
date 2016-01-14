@@ -24,9 +24,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="col-md-2">Project ID</th>
+                            <th class="col-md-6">Project ID</th>
                             <th class="col-md-5">Project Label</th>
-                            <th class="col-md-2 text-center"># Processes</th>
                             <th class="col-md-1 text-center">Action</th>
                         </tr>
                     </thead>
@@ -34,8 +33,7 @@
                         <tr ng-repeat="project in projects | filter:query">
                             <td><a ng-href="#/project/{{project.id}}/processes">{{project.id}}</a></td>
                             <td>{{project.label}}</td>
-                            <td class="text-center"><span class="badge">{{project.processNumber}}</span></td>
-                            <td class="text-center"><span><a href="#" class="glyphicon glyphicon-edit" title="Remove Project"></a></span><span><a href="" ng-click="deleteProject(project.id)" class="col-md-offset-1 glyphicon glyphicon-trash" title="Remove Project"></a></span></td>
+                            <td class="text-center"><span><a href="" ng-click="deleteProject(project.id)" class="col-md-offset-1 glyphicon glyphicon-trash" title="Remove Project"></a></span></td>
                         </tr>
                     </tbody>
                 </table>
