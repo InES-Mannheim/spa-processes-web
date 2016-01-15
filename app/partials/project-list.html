@@ -24,7 +24,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="col-md-6">Project ID</th>
+                            <th class="col-md-6">Project</th>
                             <th class="col-md-5">Project Label</th>
                             <th class="col-md-1 text-center">Action</th>
                         </tr>
@@ -48,17 +48,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Process</h4>
+                <h4 class="modal-title" id="myModalLabel">Create Project</h4>
             </div>
             <div class="modal-body">
                 <form id="createProjectForm">
                     <div class="form-group">
-                        <label>Project ID</label>
-                        <input name="newProjectID" ng-model="newProjectID" type="text" class="form-control" placeholder="In case id is not entered, it will be generate automatically.">
-                    </div>
-                    <div class="form-group">
                         <label>Project Label</label>
-                        <input name="newProjectLabel" ng-model="newProjectLabel" type="text" class="form-control">
+                        <input id="newProjectLabel" name="newProjectLabel" ng-model="newProjectLabel" type="text" class="form-control">
                     </div>
                 </form>
             </div>
@@ -75,5 +71,6 @@
     $('#createProjectModal').on('hide.bs.modal', function(e){
         $('#createProjectForm :input').not(':button, :submit, :reset, :hidden')
                                       .val('');
+        angular.element($('#newProjectLabel')).scope().newProjectLabel = '';
     });
 </script>

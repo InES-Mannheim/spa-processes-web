@@ -17,7 +17,7 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
         $scope.createProject = function(){
             createProjectButton.start();
             var projectCreatedID;
-            ProjectService.createProject({projectId: $scope.newProjectID, projectLabel: $scope.newProjectLabel})
+            ProjectService.createProject({projectLabel: $scope.newProjectLabel})
                           .$promise.then(function(project) { // On success
                                                 projectCreatedID = project.id;
                                                 $.showSuccessMessage("The project "+projectCreatedID+" was created succesfully!");
