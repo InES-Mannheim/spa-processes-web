@@ -7,6 +7,7 @@ module.exports = function(config){
       'app/assets/angular/angular.min.js',
       'app/bower_components/angular-route/angular-route.js',
       'app/assets/angular/angular-mocks/angular-mocks.js',
+      'app/assets/jquery/jquery.js',
       'app/js/**/*.js',
       'test/unit/**/*.js'
     ],

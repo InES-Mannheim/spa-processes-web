@@ -20,7 +20,7 @@ spaWebServices.factory('ProjectService', ['$resource',
 spaWebServices.factory('ProjectProcessesService', ['$resource',
     function($resource){
         return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID/processes', {}, {
-            query: {method:'GET', isArray:true}
+            query: {method:'GET'}
         });
     }
 ]);
