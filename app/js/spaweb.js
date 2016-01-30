@@ -6,6 +6,7 @@ var spaWebApp = angular.module('spaWebApp', [
     'ngRoute',
     'spaWebControllers',
     'spaWebServices',
+    'spaWebFilters',
     'ngFileUpload'
 ]);
 

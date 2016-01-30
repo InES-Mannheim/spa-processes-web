@@ -30,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="process in processes | filter:query">
+                        <tr ng-repeat="process in processes.buckets | filter:query">
                             <td>{{process.id}}</td>
                             <td>{{process.label}}</td>
                             <td class="text-center">
