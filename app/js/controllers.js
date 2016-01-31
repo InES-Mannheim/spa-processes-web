@@ -46,27 +46,32 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', 'SupportedImportFormatService',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, SupportedImportFormatService) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
+        $scope.importFormats = SupportedImportFormatService.query();
+        $scope.projectID = $routeParams.projectID;
         
-        $rootScope.title = $routeParams.projectID + ' Process List';
+        $rootScope.title = $scope.projectID + ' Process List';
         
-        $scope.uploadProcessFile = function(file){
-            file.upload = Upload.upload({
-                url: SERVER_HOST+':'+SERVER_PORT+'/projects/'+$routeParams.projectID+'/processes',
-                method: 'POST',
-                data: {
-                    processID: $scope.processID,
-                    processLabel: $scope.processLabel,
-                    processFile: file
-                }
-            }).then(function(resp) {
+        $scope.uploadProcessFile = function(isValidForm, file){
+            $scope.submitted = true;
+            if(isValidForm){
+                file.upload = Upload.upload({
+                    url: SERVER_HOST+':'+SERVER_PORT+'/projects/'+$scope.projectID+'/processes',
+                    method: 'POST',
+                    data: {
+                        processLabel: $scope.processLabel,
+                        format: $scope.selectedImportFormat,
+                        processFile: file
+                    }
+                }).then(function(resp) {
                     // file is uploaded successfully
                     console.log('file ' + resp.config.data.processFile.name + ' uploaded. Response: ' + resp.data);
                     $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
                     $('#uploadProcessFileModal').modal('hide');
                     $.showSuccessMessage('The process '+resp.data.id+' was created successfully.');
+                    $scope.cleanCreateProcessForm();
                 }, function(resp) {
                     // handle error
                     console.error('There was an error while creating a process.');
@@ -76,6 +81,16 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '%');
                 });
+            }            
         };
+        
+        $scope.cleanCreateProcessForm = function(){
+            $scope.createProcessForm.$setPristine();
+            $scope.createProcessForm.$setUntouched();
+            $scope.processLabel = '';
+            $scope.selectedImportFormat = '';
+            $scope.processFile = '';
+            $scope.submitted = false;
+        }
     }
 ]);
