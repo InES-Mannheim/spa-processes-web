@@ -24,3 +24,11 @@ spaWebServices.factory('ProjectProcessesService', ['$resource',
         });
     }
 ]);
+
+spaWebServices.factory('SupportedImportFormatService', ['$resource',
+    function($resource){
+        return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/importformats', {}, {
+            query: {method:'GET', isArray: true}
+        });
+    }
+]);
