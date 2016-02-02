@@ -32,8 +32,8 @@
                         <tr ng-repeat="process in processes.buckets | filter:query">
                             <td>{{process.label}}</td>
                             <td class="text-center">
-                                <span><a class="glyphicon glyphicon-download" title="Download process file" href="http://localhost:8080/project/{{projectID}}/processes/{{process.id | getProcessID}}"></a></span>
-                                <span class="col-md-offset-1"><a class="glyphicon glyphicon-trash" title="Remove process" href="#"></a></span>
+                                <span><a class="glyphicon glyphicon-download" title="Download process file" href="http://localhost:8080/projects/{{projectID}}/processes/{{process.id | getProcessID}}/download"></a></span>
+                                <span class="col-md-offset-1"><a class="glyphicon glyphicon-trash" title="Remove process" href="" ng-click="deleteProcess(projectID, process.id)"></a></span>
                             </td>
                         </tr>
                     </tbody>

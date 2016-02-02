@@ -19,8 +19,9 @@ spaWebServices.factory('ProjectService', ['$resource',
 
 spaWebServices.factory('ProjectProcessesService', ['$resource',
     function($resource){
-        return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID/processes', {}, {
-            query: {method:'GET'}
+        return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID/processes/:processID', {}, {
+            query: {method:'GET'},
+            deleteProcess: {method: 'DELETE', params: {projectID: '@projectID', processID: '@processID'}}
         });
     }
 ]);

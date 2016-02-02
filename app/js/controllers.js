@@ -46,14 +46,14 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', 'SupportedImportFormatService',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, SupportedImportFormatService) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', 'SupportedImportFormatService', '$filter',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, SupportedImportFormatService, $filter) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
         $scope.importFormats = SupportedImportFormatService.query();
         $scope.projectID = $routeParams.projectID;
         
         $rootScope.title = $scope.projectID + ' Process List';
-        
+
         $scope.uploadProcessFile = function(isValidForm, file){
             $scope.submitted = true;
             if(isValidForm){
@@ -91,6 +91,20 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
             $scope.selectedImportFormat = '';
             $scope.processFile = '';
             $scope.submitted = false;
+        }
+        
+        $scope.deleteProcess = function(projectID, processID){
+            var filteredProcessID = $filter('getProcessID')(processID);
+            ProjectProcessesService.deleteProcess({projectID: projectID, processID: filteredProcessID})
+                                   .$promise
+                                   .then(function(){
+                                            $.showSuccessMessage("The process "+processID+" was removed succesfully!");
+                                            $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
+                                         },
+                                         function(){
+                                            $.showErrorMessage("There was a problem removing the project.");
+                                            $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
+                                         });
         }
     }
 ]);
