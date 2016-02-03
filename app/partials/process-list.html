@@ -32,7 +32,7 @@
                         <tr ng-repeat="process in processes.buckets | filter:query">
                             <td>{{process.label}}</td>
                             <td class="text-center">
-                                <span><a class="glyphicon glyphicon-download" title="Download process file" href="http://localhost:8080/projects/{{projectID}}/processes/{{process.id | getProcessID}}/download"></a></span>
+                                <span><a class="glyphicon glyphicon-download" title="Download process file" href="" ng-click="downloadProcess(projectID, process.id)"></a></span>
                                 <span class="col-md-offset-1"><a class="glyphicon glyphicon-trash" title="Remove process" href="" ng-click="deleteProcess(projectID, process.id)"></a></span>
                             </td>
                         </tr>
@@ -56,12 +56,6 @@
                         <label>Process Label<span style="color: red;">*</span></label>
                         <input name="processLabel" ng-model="processLabel" type="text" class="form-control" ng-required="true">
                         <p ng-show="createProcessForm.processLabel.$invalid && (createProcessForm.processLabel.$touched || submitted)" class="help-block">Process label is required.</p>
-                    </div>
-                    <div class="form-group" ng-class="{ 'has-error' : createProcessForm.importFormat.$invalid && (createProcessForm.importFormat.$touched || submitted) }">
-                        <label>Import Format<span style="color: red;">*</span></label>
-                        <select class="form-control" name="importFormat" ng-model="selectedImportFormat" ng-options="importFormat for importFormat in importFormats track by importFormat" ng-required="true">
-                        </select>
-                        <p ng-show="createProcessForm.importFormat.$invalid && (createProcessForm.importFormat.$touched || submitted)" class="help-block">Import format is required.</p>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : createProcessForm.file.$invalid && (createProcessForm.file.$touched || submitted) }">
                         <label>Process File<span style="color: red;">*</span></label>

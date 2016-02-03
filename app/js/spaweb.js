@@ -7,7 +7,8 @@ var spaWebApp = angular.module('spaWebApp', [
     'spaWebControllers',
     'spaWebServices',
     'spaWebFilters',
-    'ngFileUpload'
+    'ngFileUpload',
+    'ngFileSaver'
 ]);
 
 spaWebApp.config(['$routeProvider',
