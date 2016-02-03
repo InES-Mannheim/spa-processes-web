@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var spaWebControllers = angular.module('spaWebControllers', []);
+var spaWebControllers = angular.module('spaWebControllers', ['ngFileSaver']);
 
 var SERVER_HOST = 'http://localhost';
 var SERVER_PORT = '8080';
@@ -46,10 +46,9 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', 'SupportedImportFormatService', '$filter',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, SupportedImportFormatService, $filter) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
-        $scope.importFormats = SupportedImportFormatService.query();
         $scope.projectID = $routeParams.projectID;
         
         $rootScope.title = $scope.projectID + ' Process List';
@@ -62,7 +61,7 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                     method: 'POST',
                     data: {
                         processLabel: $scope.processLabel,
-                        format: $scope.selectedImportFormat,
+                        format: "BPMN2",
                         processFile: file
                     }
                 }).then(function(resp) {
@@ -88,10 +87,9 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
             $scope.createProcessForm.$setPristine();
             $scope.createProcessForm.$setUntouched();
             $scope.processLabel = '';
-            $scope.selectedImportFormat = '';
             $scope.processFile = '';
             $scope.submitted = false;
-        }
+        };
         
         $scope.deleteProcess = function(projectID, processID){
             var filteredProcessID = $filter('getProcessID')(processID);
@@ -105,6 +103,22 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                                             $.showErrorMessage("There was a problem removing the project.");
                                             $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
                                          });
-        }
+        };
+        
+        $scope.downloadProcess = function(projectID, processID){
+            var filteredProcessID = $filter('getProcessID')(processID);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            ProjectProcessesService.downloadProcess({projectID: projectID, processID: filteredProcessID})
+                                   .$promise
+                                   .then(function(data){
+                                            FileSaver.saveAs(data.response.blob, data.response.fileName);
+                                            console.log('Download successful.');
+                                         }, 
+                                         function(error){
+                                            console.log('There was a problem when attempt to download process file');
+                                            console.error(error);
+                                         });
+        };
     }
 ]);
