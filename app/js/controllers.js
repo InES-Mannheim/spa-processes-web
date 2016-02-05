@@ -7,8 +7,8 @@ var spaWebControllers = angular.module('spaWebControllers', ['ngFileSaver']);
 var SERVER_HOST = 'http://localhost';
 var SERVER_PORT = '8080';
 
-spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'ProjectService',
-    function($scope, $rootScope, ProjectService, MessageHandler) {
+spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'ProjectService', '$filter',
+    function($scope, $rootScope, ProjectService, $filter) {
         var createProjectButton = Ladda.create(document.querySelector('#create-project-button'));
         
         $scope.projects = ProjectService.query();
@@ -33,7 +33,8 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
         };
         
         $scope.deleteProject = function(projectID){
-            ProjectService.deleteProject({projectID: projectID})
+            var filteredProjectID = $filter('getProjectID')(projectID);
+            ProjectService.deleteProject({projectID: filteredProjectID})
                           .$promise.then(function(project) { // On success
                                             $.showSuccessMessage("The project "+projectID+" was removed succesfully!");
                                             $scope.projects = ProjectService.query();
