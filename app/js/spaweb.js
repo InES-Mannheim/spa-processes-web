@@ -4,6 +4,7 @@
 
 var spaWebApp = angular.module('spaWebApp', [
     'ngRoute',
+    'spaWebConfiguration',
     'spaWebControllers',
     'spaWebServices',
     'spaWebFilters',

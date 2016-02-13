@@ -4,28 +4,25 @@
 
 var spaWebServices = angular.module('spaWebServices', ['ngResource', 'ngFileUpload']);
 
-var SERVER_HOST = 'http://localhost';
-var SERVER_PORT = '8080';
-
-spaWebServices.factory('ProjectService', ['$resource',
-    function($resource){
+spaWebServices.factory('ProjectService', ['$resource', 'SERVER_HOST', 'SERVER_PORT',
+    function($resource, SERVER_HOST, SERVER_PORT){
         return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID', {}, {
             query: {method: 'GET', isArray:true},
-            createProject: {method: 'POST', 
+            createProject: {method: 'POST',
                             params: {projectLabel: '@projectLabel'}},
-            deleteProject: {method: 'DELETE', 
+            deleteProject: {method: 'DELETE',
                             params: {projectID: '@projectID'}}
         });
     }
 ]);
 
-spaWebServices.factory('ProjectProcessesService', ['$resource',
-    function($resource){
+spaWebServices.factory('ProjectProcessesService', ['$resource', 'SERVER_HOST', 'SERVER_PORT',
+    function($resource, SERVER_HOST, SERVER_PORT){
         return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID/processes/:processID', {}, {
             query: {method:'GET'},
-            deleteProcess: {method: 'DELETE', 
+            deleteProcess: {method: 'DELETE',
                             params: {projectID: '@projectID', processID: '@processID'}},
-            downloadProcess: {method: 'GET', 
+            downloadProcess: {method: 'GET',
                               responseType: 'arraybuffer',
                               params: {projectID: '@projectID', processID: '@processID'},
                               transformResponse: (data, headersGetter) => {

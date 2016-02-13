@@ -4,16 +4,13 @@
 
 var spaWebControllers = angular.module('spaWebControllers', ['ngFileSaver']);
 
-var SERVER_HOST = 'http://localhost';
-var SERVER_PORT = '8080';
-
 spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'ProjectService', '$filter',
     function($scope, $rootScope, ProjectService, $filter) {
         var createProjectButton = Ladda.create(document.querySelector('#create-project-button'));
-        
+
         $scope.projects = ProjectService.query();
         $rootScope.title = 'Project List';
-        
+
         $scope.createProject = function(){
             createProjectButton.start();
             var projectCreatedID;
@@ -31,7 +28,7 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
             $scope.projects = ProjectService.query();
             createProjectButton.stop();
         };
-        
+
         $scope.deleteProject = function(projectID){
             var filteredProjectID = $filter('getProjectID')(projectID);
             ProjectService.deleteProject({projectID: filteredProjectID})
@@ -42,16 +39,16 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
                                             $.showErrorMessage("There was a problem removing the project.");
                                             $scope.projects = ProjectService.query();
                                     }
-                      );            
+                      );
         }
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob', 'SERVER_HOST', 'SERVER_PORT',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob, SERVER_HOST, SERVER_PORT) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
         $scope.projectID = $routeParams.projectID;
-        
+
         $rootScope.title = $scope.projectID + ' Process List';
 
         $scope.uploadProcessFile = function(isValidForm, file){
@@ -81,9 +78,9 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '%');
                 });
-            }            
+            }
         };
-        
+
         $scope.cleanCreateProcessForm = function(){
             $scope.createProcessForm.$setPristine();
             $scope.createProcessForm.$setUntouched();
@@ -91,7 +88,7 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
             $scope.processFile = '';
             $scope.submitted = false;
         };
-        
+
         $scope.deleteProcess = function(projectID, processID){
             var filteredProcessID = $filter('getProcessID')(processID);
             ProjectProcessesService.deleteProcess({projectID: projectID, processID: filteredProcessID})
@@ -105,7 +102,7 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                                             $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
                                          });
         };
-        
+
         $scope.downloadProcess = function(projectID, processID){
             var filteredProcessID = $filter('getProcessID')(processID);
             var a = document.createElement("a");
@@ -115,7 +112,7 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                                    .then(function(data){
                                             FileSaver.saveAs(data.response.blob, data.response.fileName);
                                             console.log('Download successful.');
-                                         }, 
+                                         },
                                          function(error){
                                             console.log('There was a problem when attempt to download process file');
                                             console.error(error);
