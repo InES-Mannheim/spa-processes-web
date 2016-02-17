@@ -4,9 +4,9 @@
 
 var spaWebServices = angular.module('spaWebServices', ['ngResource', 'ngFileUpload']);
 
-spaWebServices.factory('ProjectService', ['$resource', 'SERVER_HOST', 'SERVER_PORT',
-    function($resource, SERVER_HOST, SERVER_PORT){
-        return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID', {}, {
+spaWebServices.factory('ProjectService', ['$resource', 'SERVER_ADDRESS',
+    function($resource, SERVER_ADDRESS){
+        return $resource(SERVER_ADDRESS+'/projects/:projectID', {}, {
             query: {method: 'GET', isArray:true},
             createProject: {method: 'POST',
                             params: {projectLabel: '@projectLabel'}},
@@ -16,9 +16,9 @@ spaWebServices.factory('ProjectService', ['$resource', 'SERVER_HOST', 'SERVER_PO
     }
 ]);
 
-spaWebServices.factory('ProjectProcessesService', ['$resource', 'SERVER_HOST', 'SERVER_PORT',
-    function($resource, SERVER_HOST, SERVER_PORT){
-        return $resource(SERVER_HOST+':'+SERVER_PORT+'/projects/:projectID/processes/:processID', {}, {
+spaWebServices.factory('ProjectProcessesService', ['$resource', 'SERVER_ADDRESS',
+    function($resource, SERVER_ADDRESS){
+        return $resource(SERVER_ADDRESS+'/projects/:projectID/processes/:processID', {}, {
             query: {method:'GET'},
             deleteProcess: {method: 'DELETE',
                             params: {projectID: '@projectID', processID: '@processID'}},

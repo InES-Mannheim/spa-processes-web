@@ -44,8 +44,8 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob', 'SERVER_HOST', 'SERVER_PORT',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob, SERVER_HOST, SERVER_PORT) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob', 'SERVER_ADDRESS',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob, SERVER_ADDRESS) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
         $scope.projectID = $routeParams.projectID;
 
@@ -55,7 +55,7 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
             $scope.submitted = true;
             if(isValidForm){
                 file.upload = Upload.upload({
-                    url: SERVER_HOST+':'+SERVER_PORT+'/projects/'+$scope.projectID+'/processes',
+                    url: SERVER_ADDRESS+'/projects/'+$scope.projectID+'/processes',
                     method: 'POST',
                     data: {
                         processLabel: $scope.processLabel,

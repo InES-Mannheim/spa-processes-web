@@ -1,6 +1,10 @@
 'use strict';
 
-/* REST API Server Configuration */
+/* REST API Server Configuration
+*
+* Replace <SERVER_ADDRESS> with the URL where the SPA-REST Api is. Some examples:
+* - http://www.uni-mannheim.de/spa-rest
+* - http://192.168.123.123:8080/spa-rest
+*/
 var spaWebConfiguration = angular.module('spaWebConfiguration', [])
-                                 .constant('SERVER_HOST','http://192.168.99.100')
-                                 .constant('SERVER_PORT','8080');
+                                 .constant('SERVER_ADDRESS','<SERVER_ADDRESS>');
