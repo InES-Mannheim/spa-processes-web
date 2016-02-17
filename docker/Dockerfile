@@ -40,6 +40,11 @@ RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/defau
 # Copy SPA-WEB into Container
 COPY ./app /usr/share/nginx/html/app
 
+# Copy configuration.js pointing to '/api' which will be redirected by nginx.
+# Please check 'nginx-configuration.conf' in 'upstream' block to set the SPA-REST
+# API server URL/IP
+COPY ./configuration-docker.js /usr/share/nginx/html/app/js/configuration.js
+
 # Supervisor Config
 COPY ./supervisord.conf /etc/supervisord.conf
 
