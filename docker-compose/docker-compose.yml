@@ -1,0 +1,8 @@
+spa-web:
+    build: .
+    ports:
+        - "80:80"
+    links:
+        - spa-rest
+spa-rest:
+    image: spa-core/spa-rest
