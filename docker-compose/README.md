@@ -1,6 +1,6 @@
 # SPA-WEB Docker Compose
 
-This project contains the Dockerfile which run nginx and the spa-web application deployed.
+This project contains the Dockerfile which run nginx and the spa-processes-web application.
 
 ## Run with docker compose
 
