@@ -1,4 +1,4 @@
-# SPA-WEB Docker Compose
+# SPA-Processes-WEB Docker Compose
 
 This project contains the Dockerfile which run nginx and the spa-processes-web application.
 
