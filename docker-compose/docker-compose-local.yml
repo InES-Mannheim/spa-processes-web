@@ -3,6 +3,6 @@ spa-web:
     ports:
         - "80:80"
     links:
-        - spa-rest
-spa-rest:
+        - spa-processes-rest
+spa-processes-rest:
     image: ines/spa-processes-rest
