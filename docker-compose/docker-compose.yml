@@ -5,4 +5,4 @@ spa-web:
     links:
         - spa-rest
 spa-rest:
-    image: spa-core/spa-rest
+    image: ines/spa-rest
