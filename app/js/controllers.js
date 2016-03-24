@@ -2,22 +2,19 @@
 
 /* Controllers */
 
-var spaWebControllers = angular.module('spaWebControllers', []);
+var spaWebControllers = angular.module('spaWebControllers', ['ngFileSaver']);
 
-var SERVER_HOST = 'http://localhost';
-var SERVER_PORT = '8080';
-
-spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'ProjectService',
-    function($scope, $rootScope, ProjectService, MessageHandler) {
+spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'ProjectService', '$filter',
+    function($scope, $rootScope, ProjectService, $filter) {
         var createProjectButton = Ladda.create(document.querySelector('#create-project-button'));
-        
+
         $scope.projects = ProjectService.query();
         $rootScope.title = 'Project List';
-        
+
         $scope.createProject = function(){
             createProjectButton.start();
             var projectCreatedID;
-            ProjectService.createProject({projectId: $scope.newProjectID, projectLabel: $scope.newProjectLabel})
+            ProjectService.createProject({projectLabel: $scope.newProjectLabel})
                           .$promise.then(function(project) { // On success
                                                 projectCreatedID = project.id;
                                                 $.showSuccessMessage("The project "+projectCreatedID+" was created succesfully!");
@@ -31,9 +28,10 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
             $scope.projects = ProjectService.query();
             createProjectButton.stop();
         };
-        
+
         $scope.deleteProject = function(projectID){
-            ProjectService.deleteProject({projectID: projectID})
+            var filteredProjectID = $filter('getProjectID')(projectID);
+            ProjectService.deleteProject({projectID: filteredProjectID})
                           .$promise.then(function(project) { // On success
                                             $.showSuccessMessage("The project "+projectID+" was removed succesfully!");
                                             $scope.projects = ProjectService.query();
@@ -41,32 +39,36 @@ spaWebControllers.controller('ProjectListCtrl', ['$scope', '$rootScope', 'Projec
                                             $.showErrorMessage("There was a problem removing the project.");
                                             $scope.projects = ProjectService.query();
                                     }
-                      );            
+                      );
         }
     }
 ]);
 
-spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload',
-    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload) {
+spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams', 'ProjectProcessesService', '$rootScope', 'Upload', '$filter', 'FileSaver', 'Blob', 'SERVER_ADDRESS',
+    function($scope, $routeParams, ProjectProcessesService, $rootScope, Upload, $filter, FileSaver, Blob, SERVER_ADDRESS) {
         $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
-        
-        $rootScope.title = $routeParams.projectID + ' Process List';
-        
-        $scope.uploadProcessFile = function(file){
-            file.upload = Upload.upload({
-                url: SERVER_HOST+':'+SERVER_PORT+'/projects/'+$routeParams.projectID+'/processes',
-                method: 'POST',
-                data: {
-                    processID: $scope.processID,
-                    processLabel: $scope.processLabel,
-                    processFile: file
-                }
-            }).then(function(resp) {
+        $scope.projectID = $routeParams.projectID;
+
+        $rootScope.title = $scope.projectID + ' Process List';
+
+        $scope.uploadProcessFile = function(isValidForm, file){
+            $scope.submitted = true;
+            if(isValidForm){
+                file.upload = Upload.upload({
+                    url: SERVER_ADDRESS+'/projects/'+$scope.projectID+'/processes',
+                    method: 'POST',
+                    data: {
+                        processLabel: $scope.processLabel,
+                        format: "BPMN2",
+                        processFile: file
+                    }
+                }).then(function(resp) {
                     // file is uploaded successfully
                     console.log('file ' + resp.config.data.processFile.name + ' uploaded. Response: ' + resp.data);
                     $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
                     $('#uploadProcessFileModal').modal('hide');
                     $.showSuccessMessage('The process '+resp.data.id+' was created successfully.');
+                    $scope.cleanCreateProcessForm();
                 }, function(resp) {
                     // handle error
                     console.error('There was an error while creating a process.');
@@ -76,6 +78,45 @@ spaWebControllers.controller('ProjectProcessListCtrl', ['$scope', '$routeParams'
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '%');
                 });
+            }
+        };
+
+        $scope.cleanCreateProcessForm = function(){
+            $scope.createProcessForm.$setPristine();
+            $scope.createProcessForm.$setUntouched();
+            $scope.processLabel = '';
+            $scope.processFile = '';
+            $scope.submitted = false;
+        };
+
+        $scope.deleteProcess = function(projectID, processID){
+            var filteredProcessID = $filter('getProcessID')(processID);
+            ProjectProcessesService.deleteProcess({projectID: projectID, processID: filteredProcessID})
+                                   .$promise
+                                   .then(function(){
+                                            $.showSuccessMessage("The process "+processID+" was removed succesfully!");
+                                            $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
+                                         },
+                                         function(){
+                                            $.showErrorMessage("There was a problem removing the project.");
+                                            $scope.processes = ProjectProcessesService.query({projectID: $routeParams.projectID});
+                                         });
+        };
+
+        $scope.downloadProcess = function(projectID, processID){
+            var filteredProcessID = $filter('getProcessID')(processID);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            ProjectProcessesService.downloadProcess({projectID: projectID, processID: filteredProcessID})
+                                   .$promise
+                                   .then(function(data){
+                                            FileSaver.saveAs(data.response.blob, data.response.fileName);
+                                            console.log('Download successful.');
+                                         },
+                                         function(error){
+                                            console.log('There was a problem when attempt to download process file');
+                                            console.error(error);
+                                         });
         };
     }
 ]);
